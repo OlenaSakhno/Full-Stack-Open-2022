@@ -1,58 +1,49 @@
-const Part = (props) => {
-  return (
-    <>
-      <p>
-        {props.partNo} {props.exercises}
-      </p>
-    </>
-  );
-};
+import { useState } from "react";
+import { Content } from "./components/Content";
+import { Button } from "./components/Button";
+import { Statistics } from "./components/Statistics";
+import { Anecdotes } from "./components/Anecdotes";
 
 const App = () => {
-  const course = {
-    name: "Half Stack application development",
-    parts: [
-      {
-        name: "Fundamentals of React",
-        exercises: 10,
-      },
-      {
-        name: "Using props to pass data",
-        exercises: 7,
-      },
-      {
-        name: "State of a component",
-        exercises: 14,
-      },
-    ],
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
+
+  const increaseGood = () => {
+    console.log("good, value before", good);
+    setGood(good + 1);
+  };
+  const increaseNeutral = () => {
+    console.log("neutral, value before", good);
+    setNeutral(neutral + 1);
+  };
+  const increaseBad = () => {
+    console.log("bad, value before ", good);
+    setBad(bad + 1);
+  };
+  const reset = () => {
+    setGood(0);
+    setNeutral(0);
+    setBad(0);
   };
 
-  const Content = () => {
-    return (
-      <div>
-        <h1>{course.name}</h1>
-        <Part
-          partNo={course.parts[0].name}
-          exercises={course.parts[0].exercises}
-        />
-        <Part
-          partNo={course.parts[1].name}
-          exercises={course.parts[1].exercises}
-        />
-        <Part
-          partNo={course.parts[2].name}
-          exercises={course.parts[2].exercises}
-        />
-        <p>
-          Number of exercises{" "}
-          {course.parts.reduce((a, b) => a + b.exercises, 0)}
-        </p>
-      </div>
-    );
-  };
   return (
     <div>
       <Content />
+      <h1>Give feedback</h1>
+      <div>
+        <Button handleClick={increaseGood} text={"Good"} />
+        <Button handleClick={increaseNeutral} text={"Neutral"} />
+        <Button handleClick={increaseBad} text={"Bad"} />
+        {good + bad + neutral !== 0 ? (
+          <Statistics good={good} neutral={neutral} bad={bad} />
+        ) : (
+          <h3>No feedback given</h3>
+        )}
+        <Button handleClick={reset} text={"RESET"} />
+      </div>
+      <h1>Anecdotes:</h1>
+      <Anecdotes />
     </div>
   );
 };
